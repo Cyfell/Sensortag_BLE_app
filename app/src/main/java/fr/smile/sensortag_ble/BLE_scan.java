@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -22,10 +24,20 @@ public class BLE_scan extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ble_scan);
+
         defaultArray = new ArrayList<String>();
         adapter = new <String>ArrayAdapter(this, android.R.layout.simple_list_item_1, defaultArray);
-        ListView listView = (ListView) findViewById(R.id.listView);
+
+        final ListView listView = (ListView) findViewById(R.id.listView);
+        listView.setClickable(true);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            public void onItemClick(AdapterView parent, View v, int position, long id){
+                Toast toast = Toast.makeText(getApplicationContext(), (String) listView.getItemAtPosition(position), Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
         listView.setAdapter(adapter);
+
         init_Bluetooth_Adapter();
 
         scan_le_device();
@@ -44,7 +56,7 @@ public class BLE_scan extends AppCompatActivity {
             Toast toast = Toast.makeText(getApplicationContext(), "Bluetooth not enabled", Toast.LENGTH_SHORT);
             toast.show();
         } else{
-            Toast toast = Toast.makeText(getApplicationContext(), "Yolo", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(getApplicationContext(), "Bluetooth enabled", Toast.LENGTH_SHORT);
             toast.show();
         }
     }
@@ -61,16 +73,13 @@ public class BLE_scan extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            // Add newly detected device in the list
                             defaultArray.add(device.getAddress());
                             adapter.notifyDataSetChanged();
                         }
                     });
                 }
             };
-
-    private void UpdateListView(BluetoothDevice device) {
-
-    }
 
 
 }
