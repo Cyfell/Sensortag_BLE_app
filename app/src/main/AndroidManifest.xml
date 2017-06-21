@@ -19,9 +19,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <uses-permission android:name="android.permission.BLUETOOTH"/>
-        <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
-        <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
+
+        <uses-permission android:name="android.permission.BLUETOOTH" />
+        <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+
+        <uses-feature
+            android:name="android.hardware.bluetooth_le"
+            android:required="true" />
+
+        <activity
+            android:name=".GATT_scanner"
+            android:label="@string/title_activity_gatt_scanner"
+            android:parentActivityName=".BLE_scan"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="fr.smile.sensortag_ble.BLE_scan" />
+        </activity>
     </application>
 
 </manifest>

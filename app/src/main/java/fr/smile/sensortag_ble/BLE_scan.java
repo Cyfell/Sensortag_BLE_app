@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -29,13 +30,17 @@ public class BLE_scan extends AppCompatActivity {
         adapter = new <String>ArrayAdapter(this, android.R.layout.simple_list_item_1, defaultArray);
 
         final ListView listView = (ListView) findViewById(R.id.listView);
+        final Intent intent = new Intent(this, GATT_scanner.class);
         listView.setClickable(true);
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             public void onItemClick(AdapterView parent, View v, int position, long id){
-                Toast toast = Toast.makeText(getApplicationContext(), (String) listView.getItemAtPosition(position), Toast.LENGTH_SHORT);
-                toast.show();
+                String Maccaddr;
+                intent.putExtra(Maccaddr, (String) listView.getItemAtPosition(position));
+                startActivity(intent);
             }
         });
+
         listView.setAdapter(adapter);
 
         init_Bluetooth_Adapter();
