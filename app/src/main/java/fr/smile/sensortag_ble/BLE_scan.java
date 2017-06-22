@@ -35,7 +35,8 @@ public class BLE_scan extends AppCompatActivity {
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             public void onItemClick(AdapterView parent, View v, int position, long id){
-                String Maccaddr;
+                mBluetoothAdapter.stopLeScan(mLeScanCallback);
+                String Maccaddr = null;
                 intent.putExtra(Maccaddr, (String) listView.getItemAtPosition(position));
                 startActivity(intent);
             }
@@ -68,8 +69,8 @@ public class BLE_scan extends AppCompatActivity {
 
     private void scan_le_device(){
         mBluetoothAdapter.startLeScan(mLeScanCallback);
-
     }
+
     private BluetoothAdapter.LeScanCallback mLeScanCallback =
             new BluetoothAdapter.LeScanCallback() {
                 @Override
