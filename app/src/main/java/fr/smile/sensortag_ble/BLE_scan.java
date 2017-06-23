@@ -82,7 +82,7 @@ public class BLE_scan extends AppCompatActivity {
                         public void run() {
                             if (!MaccaddrArray.contains(device.getAddress())){
                                 // Add newly detected device in the list
-                                MaccaddrArray.add(device.toString());
+                                MaccaddrArray.add(device.getName() +" : " + device.toString());
                                 adapter.notifyDataSetChanged();
                                 DevicesFounds.add(device);
                             }
