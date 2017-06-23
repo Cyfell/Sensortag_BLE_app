@@ -20,14 +20,16 @@ import java.util.ArrayList;
 public class BLE_scan extends AppCompatActivity {
     private BluetoothAdapter mBluetoothAdapter;
     private ArrayAdapter<String> adapter;
-    private ArrayList<String> defaultArray;
+    private ArrayList<String> MaccaddrArray;
+    private ArrayList<BluetoothDevice> DevicesFounds;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ble_scan);
 
-        defaultArray = new ArrayList<String>();
-        adapter = new <String>ArrayAdapter(this, android.R.layout.simple_list_item_1, defaultArray);
+        MaccaddrArray = new ArrayList<String>();
+        DevicesFounds = new ArrayList<BluetoothDevice>();
+        adapter = new <String>ArrayAdapter(this, android.R.layout.simple_list_item_1, MaccaddrArray);
 
         final ListView listView = (ListView) findViewById(R.id.listView);
         final Intent intent = new Intent(this, GATT_scanner.class);
@@ -36,8 +38,7 @@ public class BLE_scan extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             public void onItemClick(AdapterView parent, View v, int position, long id){
                 mBluetoothAdapter.stopLeScan(mLeScanCallback);
-                String Maccaddr = null;
-                intent.putExtra(Maccaddr, (String) listView.getItemAtPosition(position));
+                intent.putExtra("btdevice",DevicesFounds.get(position));
                 startActivity(intent);
             }
         });
@@ -70,7 +71,7 @@ public class BLE_scan extends AppCompatActivity {
     private void scan_le_device(){
         mBluetoothAdapter.startLeScan(mLeScanCallback);
     }
-
+    //private LeDeviceListAdapter mDeviceListAdapter;
     private BluetoothAdapter.LeScanCallback mLeScanCallback =
             new BluetoothAdapter.LeScanCallback() {
                 @Override
@@ -79,9 +80,13 @@ public class BLE_scan extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            // Add newly detected device in the list
-                            defaultArray.add(device.getAddress());
-                            adapter.notifyDataSetChanged();
+                            if (!MaccaddrArray.contains(device.getAddress())){
+                                // Add newly detected device in the list
+                                MaccaddrArray.add(device.toString());
+                                adapter.notifyDataSetChanged();
+                                DevicesFounds.add(device);
+                            }
+
                         }
                     });
                 }
